@@ -33,7 +33,7 @@ function plsuccess(data){
     for(var i=0;i<slen;i++)
     {
         var fileurl = data[i].exportedurl;
-        fileurl = fileurl.replace("file://localhost/","/");
+        fileurl = fileurl.replace("file:///","/");
         fileurl = decodeURI(fileurl);
         srcarray.push(fileurl);
     }
