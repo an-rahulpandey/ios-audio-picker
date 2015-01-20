@@ -38,8 +38,9 @@ window.plugins.iOSAudioPicker.getAudio(success,error,option);
 
 2. To delete the song
 
-
-     window.plugins.iOSAudioPicker.deleteSongs(success,error,option,src);
+````
+window.plugins.iOSAudioPicker.deleteSongs(success,error,option,src);
+````
 
 
  option - To delete multiple files or single file. You can either pass 'true' or 'false'.
