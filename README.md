@@ -8,7 +8,7 @@ The plugin allows you to select the song from iOS music library and copy it in y
 
 ### Methods & Usage
 
-1. To select the song from music library
+- **To select the song from music library**
 
 
 ````
@@ -36,7 +36,7 @@ window.plugins.iOSAudioPicker.getAudio(success,error,option);
     var options = 'false' // Will allow user to select only one song.
 ````
 
-2. To delete the song
+- **To delete the song**
 
 ````
 window.plugins.iOSAudioPicker.deleteSongs(success,error,option,src);
