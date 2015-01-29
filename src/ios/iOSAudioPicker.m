@@ -9,11 +9,13 @@
 {
     callbackID = command.callbackId;
     NSString *msong = [command argumentAtIndex:0];
+    NSString *iCloudItems = [command argumentAtIndex:1];
     
     MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeAnyAudio];
     
     mediaPicker.delegate = self;
     mediaPicker.allowsPickingMultipleItems = [msong isEqualToString:@"true"];
+    mediaPicker.showsCloudItems = [iCloudItems isEqualToString:@"true"];
     mediaPicker.prompt = NSLocalizedString (@"Add songs to play", "Prompt in media item picker");
     
     [self.viewController presentViewController:mediaPicker animated:YES completion:nil];
