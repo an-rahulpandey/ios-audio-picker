@@ -12,7 +12,7 @@ The plugin allows you to select the song from iOS music library and copy it in y
 
 
 ````
-window.plugins.iOSAudioPicker.getAudio(success,error,option);
+window.plugins.iOSAudioPicker.getAudio(success,error,multiple,icloud);
 ````
 
   success - will be called when the user has done selecting the songs. You can get the array of songs list using this
@@ -29,11 +29,17 @@ window.plugins.iOSAudioPicker.getAudio(success,error,option);
       console.log(e);
     }
 ````  
- option - a string variable which allows you the disable multiple songs selection from the user. You can either pass 'true' or 'false'
+**multiple** - a string variable which allows you the disable multiple songs selection from the user. You can either pass 'true' or 'false'
+ 
+**icloud** - a string variable if sets 'true' will show the iCloud songs otherwise not.
 ````
-    var options = 'true' // Will allow user to select multiple songs.
+    var multiple = 'true' // Will allow user to select multiple songs.
     or
-    var options = 'false' // Will allow user to select only one song.
+    var multiple = 'false' // Will allow user to select only one song.
+    
+    var icloud = 'true' // Will show iCloud songs.
+    or
+    var icloud = 'false' // Will only show songs available locally on device.
 ````
 
 - **To delete the song**
