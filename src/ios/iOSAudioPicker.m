@@ -82,13 +82,19 @@
         
         for(MPMediaItem *song in allSelectedSongs)
         {
+            BOOL artImageFound = NO;
+            NSData *imgData;
             NSString *title = [song valueForProperty:MPMediaItemPropertyTitle];
             NSString *albumTitle = [song valueForProperty:MPMediaItemPropertyAlbumTitle];
             NSString *artist = [song valueForProperty:MPMediaItemPropertyArtist];
             NSURL *songurl = [song valueForProperty:MPMediaItemPropertyAssetURL];
             MPMediaItemArtwork *artImage = [song valueForProperty:MPMediaItemPropertyArtwork];
             UIImage *artworkImage = [artImage imageWithSize:CGSizeMake(artImage.bounds.size.width, artImage.bounds.size.height)];
-            NSData *imgData = UIImagePNGRepresentation(artworkImage);
+            if(artworkImage != nil){
+                imgData = UIImagePNGRepresentation(artworkImage);
+                artImageFound = YES;
+            }
+            
             NSNumber *duration = [song valueForProperty:MPMediaItemPropertyPlaybackDuration];
             NSString *genre = [song valueForProperty:MPMediaItemPropertyGenre];
             
@@ -141,14 +147,19 @@
                         [songInfo setObject:albumTitle forKey:@"albumTitle"];
                         [songInfo setObject:artist forKey:@"artist"];
                         [songInfo setObject:[songurl absoluteString] forKey:@"ipodurl"];
-                        [songInfo setObject:[imgData base64EncodedString] forKey:@"image"];
+                        if (artImageFound) {
+                            [songInfo setObject:[imgData base64EncodedDataWithOptions:0] forKey:@"image"];
+                        } else {
+                            [songInfo setObject:@"No Image" forKey:@"image"];
+                        }
+                        
                         [songInfo setObject:duration forKey:@"duration"];
                         [songInfo setObject:genre forKey:@"genre"];
                         [songInfo setObject:[audioURL absoluteString] forKey:@"exportedurl"];
                         [songInfo setObject:filename forKey:@"filename"];
                         
                         [songsList addObject:songInfo];
-                       
+                        
                         //NSLog(@"Audio Data = %@",songsList);
                         NSLog(@"Export Completed = %d out of Total Selected = %d",completed,selcount);
                         if (completed == selcount) {
@@ -173,11 +184,11 @@
                         break;
                     }
                     case AVAssetExportSessionStatusExporting:{
-                         NSLog(@"AVAssetExportSessionStatusExporting");
+                        NSLog(@"AVAssetExportSessionStatusExporting");
                         plresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Exporting"];
-                         break;
+                        break;
                     }
-                    
+                        
                     default:{
                         NSLog(@"Didnt get any status");
                         break;
@@ -187,15 +198,13 @@
         }
         
     }
-
-     [self.viewController dismissViewControllerAnimated:YES completion:nil];
+    
+    [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker
 {
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
-
-
 
 @end
