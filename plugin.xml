@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="me.rahul.plugins.audio-picker"
-        version="0.0.5">
+        version="0.0.6">
 
         <name>iOSAudioPicker</name>
         <description>Select Audio files Using Media Picker</description>
