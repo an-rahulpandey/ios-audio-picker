@@ -10,16 +10,16 @@
     callbackID = command.callbackId;
     NSString *msong = [command argumentAtIndex:0];
     NSString *iCloudItems = [command argumentAtIndex:1];
-    
+
     MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeAnyAudio];
-    
+
     mediaPicker.delegate = self;
     mediaPicker.allowsPickingMultipleItems = [msong isEqualToString:@"true"];
     mediaPicker.showsCloudItems = [iCloudItems isEqualToString:@"true"];
     mediaPicker.prompt = NSLocalizedString (@"Add songs to play", "Prompt in media item picker");
-    
+
     [self.viewController presentViewController:mediaPicker animated:YES completion:nil];
-    
+
 }
 
 - (void) deleteSongs:(CDVInvokedUrlCommand *)command
@@ -34,7 +34,7 @@
             NSLog(@"Delete Result = %@",result);
         }
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"deleting"];
-        
+
     }
     else
     {
@@ -45,9 +45,9 @@
         else
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:delResult];
     }
-    
+
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    
+
 }
 
 - (NSString *)delSingleSong:(NSString*)path
@@ -70,16 +70,16 @@
 
 - (void) mediaPicker:(MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection
 {
-    
+
     if (mediaItemCollection) {
-        
+
         songsList = [[NSMutableArray alloc] init];
-        
+
         NSArray *allSelectedSongs = [mediaItemCollection items];
-        
+
         int selcount = [allSelectedSongs count];
         __block int completed = 0;
-        
+
         for(MPMediaItem *song in allSelectedSongs)
         {
             BOOL artImageFound = NO;
@@ -94,38 +94,38 @@
                 imgData = UIImagePNGRepresentation(artworkImage);
                 artImageFound = YES;
             }
-            
+
             NSNumber *duration = [song valueForProperty:MPMediaItemPropertyPlaybackDuration];
             NSString *genre = [song valueForProperty:MPMediaItemPropertyGenre];
-            
+
             NSLog(@"title = %@",title);
             NSLog(@"albumTitle = %@",albumTitle);
             NSLog(@"artist = %@",artist);
             NSLog(@"songurl = %@",songurl);
-            
-            
+
+
             AVURLAsset *songURL = [AVURLAsset URLAssetWithURL:songurl options:nil];
-            
+
             NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            
+
             NSString *documentDir = [path objectAtIndex:0];
-            
+
             //NSLog(@"Compatible Preset for selected Song = %@", [AVAssetExportSession exportPresetsCompatibleWithAsset:songURL]);
-            
+
             AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:songURL presetName:AVAssetExportPresetAppleM4A];
-            
+
             exporter.outputFileType = @"com.apple.m4a-audio";
-            
+
             NSString *filename = [NSString stringWithFormat:@"%@.m4a",title];
-            
+
             NSString *outputfile = [documentDir stringByAppendingPathComponent:filename];
-            
+
             [self delSingleSong:outputfile];
-            
+
             NSURL *exportURL = [NSURL fileURLWithPath:outputfile];
-            
+
             exporter.outputURL  = exportURL;
-            
+
             [exporter exportAsynchronouslyWithCompletionHandler:^{
                 int exportStatus = exporter.status;
                 completed++;
@@ -138,28 +138,41 @@
                         break;
                     }
                     case AVAssetExportSessionStatusCompleted:{
-                        
+
                         NSURL *audioURL = exportURL;
                         NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
-                        
+
                         NSLog(@"AVAssetExportSessionStatusCompleted %@",audioURL);
-                        [songInfo setObject:title forKey:@"title"];
-                        [songInfo setObject:albumTitle forKey:@"albumTitle"];
-                        [songInfo setObject:artist forKey:@"artist"];
+                        if(title != nil) {
+                            [songInfo setObject:title forKey:@"title"];
+                        } else {
+                            [songInfo setObject:@"No Title" forKey:@"title"];
+                        }
+                        if(albumTitle != nil) {
+                            [songInfo setObject:albumTitle forKey:@"albumTitle"];
+                        } else {
+                            [songInfo setObject:@"No Album" forKey:@"albumTitle"];
+                        }
+                        if(artist !=nil) {
+                            [songInfo setObject:artist forKey:@"artist"];
+                        } else {
+                            [songInfo setObject:@"No Artist" forKey:@"artist"];
+                        }
+
                         [songInfo setObject:[songurl absoluteString] forKey:@"ipodurl"];
                         if (artImageFound) {
                             [songInfo setObject:[imgData base64EncodedString] forKey:@"image"];
                         } else {
                             [songInfo setObject:@"No Image" forKey:@"image"];
                         }
-                        
+
                         [songInfo setObject:duration forKey:@"duration"];
                         [songInfo setObject:genre forKey:@"genre"];
                         [songInfo setObject:[audioURL absoluteString] forKey:@"exportedurl"];
                         [songInfo setObject:filename forKey:@"filename"];
-                        
+
                         [songsList addObject:songInfo];
-                        
+
                         //NSLog(@"Audio Data = %@",songsList);
                         NSLog(@"Export Completed = %d out of Total Selected = %d",completed,selcount);
                         if (completed == selcount) {
@@ -188,7 +201,7 @@
                         plresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Exporting"];
                         break;
                     }
-                        
+
                     default:{
                         NSLog(@"Didnt get any status");
                         break;
@@ -196,9 +209,9 @@
                 }
             }];
         }
-        
+
     }
-    
+
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
