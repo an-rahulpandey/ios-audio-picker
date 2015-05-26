@@ -167,7 +167,12 @@
                         }
 
                         [songInfo setObject:duration forKey:@"duration"];
-                        [songInfo setObject:genre forKey:@"genre"];
+                        if (genre != nil){
+                          [songInfo setObject:@"No Genre" forKey:@"genre"];
+                        } else {
+                          [songInfo setObject:genre forKey:@"genre"];
+                        }
+                        
                         [songInfo setObject:[audioURL absoluteString] forKey:@"exportedurl"];
                         [songInfo setObject:filename forKey:@"filename"];
 
