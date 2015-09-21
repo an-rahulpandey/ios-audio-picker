@@ -103,9 +103,11 @@
             NSLog(@"artist = %@",artist);
             NSLog(@"songurl = %@",songurl);
 
-
-            AVURLAsset *songURL = [AVURLAsset URLAssetWithURL:songurl options:nil];
-
+            if(songurl) {
+                AVURLAsset *songURL = [AVURLAsset URLAssetWithURL:songurl options:nil];
+            } else {
+                NSLog(@"DRM Protected file - %@",title);
+            }
             NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 
             NSString *documentDir = [path objectAtIndex:0];
