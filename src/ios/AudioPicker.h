@@ -1,11 +1,11 @@
-/********* iOSAudioPicker.h Cordova Plugin header *******/
+/********* AudioPicker.h Cordova Plugin header *******/
 
 #import <Cordova/CDVPlugin.h>
 #import <Cordova/CDV.h>
 #import <MediaPlayer/MediaPlayer.h>
 
 
-@interface iOSAudioPicker : CDVPlugin <MPMediaPickerControllerDelegate> {
+@interface AudioPicker : CDVPlugin <MPMediaPickerControllerDelegate> {
     NSString *callbackID;
     NSData *audioData;
     CDVPluginResult *plresult;
