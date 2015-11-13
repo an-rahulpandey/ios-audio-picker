@@ -4,7 +4,7 @@
         id="me.rahul.plugins.audio-picker"
         version="1.0.0">
 
-        <name>AudioPicker</name>
+        <name>iOSAudioPicker</name>
         <description>Select Audio files Using Media Picker</description>
 
         <author>Rahul Pandey</author>
@@ -13,37 +13,22 @@
             <engine name="cordova" version=">=3.0.0" />
         </engines>
 
-        <js-module name="AudioPicker" src="www/AudioPicker.js">
-            <clobbers target="window.plugins.AudioPicker" />
+        <js-module name="iOSAudioPicker" src="www/iOSAudioPicker.js">
+            <clobbers target="window.plugins.iOSAudioPicker" />
         </js-module>
 
         <platform name="ios">
 
             <config-file parent="/*" target="config.xml">
-                <feature name="AudioPicker">
-                    <param name="ios-package" value="AudioPicker" />
+                <feature name="iOSAudioPicker">
+                    <param name="ios-package" value="iOSAudioPicker" />
                 </feature>
             </config-file>
 
-            <header-file src="src/ios/AudioPicker.h" />
-            <source-file src="src/ios/AudioPicker.m" />
+            <header-file src="src/ios/iOSAudioPicker.h" />
+            <source-file src="src/ios/iOSAudioPicker.m" />
 
             <framework src="MediaPlayer.framework" weak="true" />
 
         </platform>
-
-        <platform name="android">
-            <config-file target="res/xml/config.xml" parent="/*">
-                <feature name="AudioPicker" >
-                    <param name="android-package" value="me.rahul.plugins.AudioPicker"/>
-                </feature>
-            </config-file>
-
-            <config-file target="AndroidManifest.xml" parent="/*">
-                <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-            </config-file>
-
-            <source-file src="src/android/AudioPicker.java" target-dir="src/me/rahul/plugins" />
-            <source-file src="src/android/Base64.java" target-dir="src/me/rahul/plugins" />
-     </platform>
 </plugin>
