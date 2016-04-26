@@ -1,9 +1,9 @@
 {
   "name": "cordova-plugin-iosaudiopicker",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Cordova/Phonegap plugin to select songs or audio files from iTunes Library",
   "cordova": {
-    "id": "me.rahul.plugins.audio-picker",
+    "id": "cordova-plugin-iosaudiopicker",
     "platforms": [
       "ios"
     ]
