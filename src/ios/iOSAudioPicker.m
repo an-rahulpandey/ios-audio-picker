@@ -161,7 +161,7 @@
 
                         [songInfo setObject:[songurl absoluteString] forKey:@"ipodurl"];
                         if (artImageFound) {
-                            [songInfo setObject:[imgData base64EncodedString] forKey:@"image"];
+                            [songInfo setObject:[imgData base64EncodedStringWithOptions:0] forKey:@"image"];
                         } else {
                             [songInfo setObject:@"No Image" forKey:@"image"];
                         }
